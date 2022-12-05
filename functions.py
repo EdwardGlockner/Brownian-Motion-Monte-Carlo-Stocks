@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 def read_csv(file_path, tick):
     """
+    Reads a file_path for a gvin ticker, and returns a dataframe with date and closing price 
     @params:
         file_path: path to the destination of the file
         tick: ticker of the stock
@@ -13,7 +14,6 @@ def read_csv(file_path, tick):
     @returns:
         temp: pandas dataframe with closing price and date of the stock
 
-    Reads a file_path for a given ticker, and returns a dataframe with a column: close.
     """
     temp = pd.read_csv(file_path, parse_dates=[0], index_col=0)
     temp.rename(columns={"Close" : tick}, inplace = True)
