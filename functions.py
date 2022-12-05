@@ -39,18 +39,25 @@ def MC(dataframe,nofsim):
     @returns:
         
     """
+    #Parameters
     mu = dataframe.mean()
     var = dataframe.var()
     drift = mu - 0.5*var
     std = dataframe.std()
     days = np.arange(252)
 
+    #Variables
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + var.values*epsilon 
     sim_values = np.zeros_like(delta_x)
     value_0 = dataframe["Close"].iloc[0]
     sim_values[0] = value_0
     
+    #Simulation
+    for t in range(1, len(days)):
+        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
+    
+    print(sim_values)
     
 
 
