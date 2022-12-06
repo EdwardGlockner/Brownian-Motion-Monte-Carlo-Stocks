@@ -1,10 +1,9 @@
 from functions import *
-
 import scipy
 from matplotlib import pyplot as plt
 # Data of the stock
 ticker = "AMZN"
-file_path = "/Users/edwardglockner/Library/CloudStorage/OneDrive-Uppsalauniversitet/Fristående Kurser/Inferensteori I/Brownian-Motion-Monte-Carlo-Stocks/Data/AMZN.csv" 
+file_path = "Data/AMZN.csv" 
 
 
 # Reads the data into a dataframe
