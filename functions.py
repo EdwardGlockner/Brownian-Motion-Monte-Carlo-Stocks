@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import matplotlib.pyplot as plt
-from scipy.stats import norm 
 
 
 def read_csv(file_path, tick):
@@ -47,7 +46,7 @@ def MC(dataframe,nofsim):
     days = np.arange(252)
 
     #Variables
-    epsilon = norm.ppf(np.random.rand(len(days), nofsim))
+    epsilon = np.random.rand(len(days), nofsim)
     delta_x = drift.values + var.values*epsilon 
     sim_values = np.zeros_like(delta_x)
     value_0 = dataframe["Close"].iloc[0]
@@ -55,10 +54,13 @@ def MC(dataframe,nofsim):
     
     #Simulation
     for t in range(1, len(days)):
+        
         sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
     
-    print(sim_values)
-    
+    plt.plot(sim_values)
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.show()
 
 
 
