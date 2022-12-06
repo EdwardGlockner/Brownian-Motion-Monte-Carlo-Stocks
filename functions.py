@@ -74,7 +74,7 @@ def MC(start_val, dataframe, nofsim):
     index_values = [i for i in range(0, len(days))]
     column_index = [i for i in range(0, nofsim)]
     new_dataframe = pd.DataFrame(sim_values)
-    return sim_values
+    return new_dataframe
     
 
 
