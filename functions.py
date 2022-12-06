@@ -69,16 +69,9 @@ def MC(dataframe,nofsim):
     
     #Simulation
     for t in range(1, len(days)):
-<<<<<<< HEAD
         sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
-    
-    
-=======
-        
-        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t-1])
-
     return sim_values
->>>>>>> 45de7057ed3b7840c8d44488562141a5ab9ff5d4
+    
     
 
 def MC_V2(train, test, no_sim):
