@@ -3,8 +3,8 @@ import scipy
 from matplotlib import pyplot as plt
 # Data of the stock
 ticker = "AMZN"
-file_path = "Data/AMZN.csv" 
-
+#file_path = "Data/AMZN.csv" 
+file_path = "Brownian-Motion-Monte-Carlo-Stocks\Data\AMZN.csv"
 
 # Reads the data into a dataframe
 data = read_csv(file_path, ticker)
