@@ -21,17 +21,6 @@ def read_csv(file_path, tick):
     temp.drop(["Open", "High", "Low", "Adj Close", "Volume"], axis = 1, inplace = True)
     return temp
 
-def log_returns(dataframe):
-    """
-    @params:
-        dataframe: pandas dataframe of our stock.
-    @returns:
-        diff: logaritmic difference. 
-    """
-    diff = np.log(dataframe).diff().dropna()
-    return diff
-
-
 
 def split_timeseries(timeSeries):
     """
@@ -45,6 +34,16 @@ def split_timeseries(timeSeries):
     Test = timeSeries[round(len(timeSeries)*0.8) : len(timeSeries)]
     return Train, Test
 
+
+def log_returns(dataframe):
+    """
+    @params:
+        dataframe: pandas dataframe of our stock.
+    @returns:
+        diff: logaritmic difference. 
+    """
+    diff = np.log(dataframe).diff().dropna()
+    return diff
 
 
 def MC(dataframe,nofsim):
