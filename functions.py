@@ -30,8 +30,8 @@ def split_timeseries(timeSeries):
 
     Splits a dataframe into a training set containing 80% of the data, and a testing set containing 
     """
-    Train = timeSeries[round(len(timeSeries)*0.5) : round(len(timeSeries)*0.8)]
-    Test = timeSeries[round(len(timeSeries)*0.8) : len(timeSeries)]
+    Train = timeSeries[0 : round(len(timeSeries)*0.5)]
+    Test = timeSeries[round(len(timeSeries)*0.5) : len(timeSeries)]
     return Train, Test
 
 
