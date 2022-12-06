@@ -14,6 +14,7 @@ train_returns = log_returns(train)
 start_val = train["Close"].iloc[len(train)-1]
 mc_sim = MC(start_val, train_returns, 10000)
 
+
 plt.figure()
 plt.plot(mc_sim)
 plt.show()

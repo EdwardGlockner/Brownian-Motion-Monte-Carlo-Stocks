@@ -51,7 +51,8 @@ def MC(start_val, dataframe, nofsim):
     @params:
         dataframe: pandas dataframe of our stock
     @returns:
-        
+       
+
     """
     #Parameters
     mu = dataframe.mean()
