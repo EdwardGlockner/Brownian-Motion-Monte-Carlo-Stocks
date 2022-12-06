@@ -17,3 +17,6 @@ mc_sim = MC(start_val, train_returns, 10000)
 plt.figure()
 plt.plot(mc_sim)
 plt.show()
+
+
+

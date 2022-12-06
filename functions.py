@@ -60,6 +60,7 @@ def MC(start_val, dataframe, nofsim):
     std = dataframe.std()
     days = np.arange(252)
 
+
     #Variables
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + std.values*epsilon 
