@@ -1,3 +1,4 @@
+from scipy.stats import norm
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -31,6 +32,21 @@ def log_returns(dataframe):
     return diff
 
 
+
+def split_timeseries(timeSeries):
+    """
+    @params:
+
+    @returns:
+
+    Splits a dataframe into a training set containing 80% of the data, and a testing set containing 
+    """
+    Train = timeSeries[round(len(timeSeries)*0.5) : round(len(timeSeries)*0.8)]
+    Test = timeSeries[round(len(timeSeries)*0.8) : len(timeSeries)]
+    return Train, Test
+
+
+
 def MC(dataframe,nofsim):
     """
     @params:
@@ -57,11 +73,33 @@ def MC(dataframe,nofsim):
         
         sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
     
-    plt.plot(sim_values)
-    plt.xlabel("x")
-    plt.ylabel("y")
-    plt.show()
 
+def MC_V2(train, test, no_sim):
+    """
 
+    """
+
+    #Parameters
+
+    mu = train.mean()
+    var = train.var()
+    drift = mu - 0.5*var
+    std = train.std()
+    days = np.arange(252)
+
+    # Variables
+
+    epsilon = norm.ppf(np.random.rand(len(days), no_sim))
+    delta_x = drift.values + std.values * epsilon
+    print(delta_x)
+    sim_values = np.zeros_like(delta_x)
+    sim_values[0] = train["Close"].iloc[0] # Initial value
+
+    # Simulation
+
+    for i in range(1, len(days)):
+        sim_values[i] = sim_values[i-1]*np.exp(delta_x[i-1])
+
+    return sim_values
 
 
