@@ -60,7 +60,6 @@ def MC(start_val, dataframe, nofsim):
     std = dataframe.std()
     days = np.arange(252)
 
-
     #Variables
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + std.values*epsilon 
@@ -70,6 +69,10 @@ def MC(start_val, dataframe, nofsim):
     #Simulation
     for t in range(1, len(days)):
         sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
+    
+    index_values = [i for i in range(0, len(days))]
+    column_index = [i for i in range(0, nofsim)]
+    new_dataframe = pd.DataFrame(sim_values)
     return sim_values
     
 
