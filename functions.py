@@ -57,7 +57,7 @@ def MC(dataframe,nofsim):
     for t in range(1, len(days)):
         sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
     
-    print(sim_values)
+    
     
 
 

@@ -7,7 +7,7 @@ data = read_csv(file_path, ticker)
 
 diff = log_returns(data)
 
-sim = MC(diff,2)
+sim = MC(diff,1)
 
 
 
