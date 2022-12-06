@@ -64,42 +64,27 @@ def MC(dataframe,nofsim):
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + std.values*epsilon 
     sim_values = np.zeros_like(delta_x)
-    value_0 = dataframe["Close"].iloc[0]
+    value_0 = dataframe["Close"].iloc[-1]
     sim_values[0] = value_0
     
     #Simulation
     for t in range(1, len(days)):
-        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
+        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t-1])
     return sim_values
     
-    
 
-def MC_V2(train, test, no_sim):
+def convert_to_price(start_value, delta_x):
     """
-
+    @params:
+        start_value: starting value of the simulation
+        delta_x: logartihm of daily change in price
+    @returns:
+        the coherent price graph
     """
+    price_array = np.zeros_like(delta_x)
+    price_array[0] = start_value
 
-    #Parameters
-
-    mu = train.mean()
-    var = train.var()
-    drift = mu - 0.5*var
-    std = train.std()
-    days = np.arange(252)
-
-    # Variables
-
-    epsilon = norm.ppf(np.random.rand(len(days), no_sim))
-    delta_x = drift.values + std.values * epsilon
-    print(delta_x)
-    sim_values = np.zeros_like(delta_x)
-    sim_values[0] = train["Close"].iloc[0] # Initial value
-
-    # Simulation
-
-    for i in range(1, len(days)):
-        sim_values[i] = sim_values[i-1]*np.exp(delta_x[i-1])
-
-    return sim_values
-
+    for i in range(1, len(delta_x)):
+        price_array[i] = price_array[i-1] + np.exp(delta_x[i-1])
+    return price_array
 
