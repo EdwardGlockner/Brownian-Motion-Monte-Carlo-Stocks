@@ -11,9 +11,9 @@ data = read_csv(file_path, ticker)
 train, test = split_timeseries(data)
 
 train_returns = log_returns(train)
-mc_sim = MC(train_returns, 10000)
-mc_price = convert_to_price(train_returns["Close"].iloc[-1], mc_sim)
+start_val = train["Close"].iloc[len(train)-1]
+mc_sim = MC(start_val, train_returns, 10000)
 
 plt.figure()
-plt.plot(mc_price)
+plt.plot(mc_sim)
 plt.show()
