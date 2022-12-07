@@ -28,3 +28,5 @@ for i in range(0,50):
 #mc_sim.loc[dates_sim[0] : dates_sim[-1], 0].plot()
 #mc_sim.loc[dates_sim[0] : dates_sim[-1], 1].plot()
 plt.show()
+
+
