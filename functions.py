@@ -46,7 +46,66 @@ def log_returns(dataframe):
     return diff
 
 
-def MC(start_val, dataframe, nofsim):
+def MC(train, start_val, dataframe, nofsim, days_sim):
+    """
+    @params:
+        dataframe: pandas dataframe of our stock
+    @returns:
+       
+
+    """
+    #Parameters
+    mu = dataframe.mean()
+    var = dataframe.var()
+    drift = mu - 0.5*var
+    std = dataframe.std()
+    days = np.arange(days_sim)
+
+    #Variables
+    epsilon = norm.ppf(np.random.rand(len(days), nofsim))
+    delta_x = drift.values + std.values*epsilon 
+    sim_values = np.zeros_like(delta_x)
+    sim_values[0] = start_val
+    
+    #Simulation
+    for t in range(1, len(days)):
+        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
+    
+    index_values = [i for i in range(0, len(days))]
+    column_index = [i for i in range(0, nofsim)]
+    new_dataframe = pd.DataFrame(sim_values)
+
+    dates_train = pd.to_datetime(train.index.values)
+    dates_sim = pd.date_range(str(dates_train[-1]), periods = days_sim, freq="D")
+    new_dataframe.index = dates_sim
+
+    return new_dataframe
+    
+
+def plot_tree(train, days_sim, mc_sim):
+    dates_train = pd.to_datetime(train.index.values)
+    dates_sim = pd.to_datetime(mc_sim.index.values)
+
+    plt.figure()
+    train.loc[dates_train[0] : dates_train[-1], "Close"].plot()
+
+    for i in range(0, len(mc_sim.columns)):
+        mc_sim.loc[dates_sim[0] : dates_sim[-1], i].plot()
+
+    plt.show()
+
+def final_values(mc_sim):
+    last_values = mc_sim.iloc[-1,:]
+    return last_values
+
+def plot_histogram(values):
+    values.hist(bins=40, grid=True, figsize=(7,4), color = "#86bf91", zorder=2, rwidth=0.9)
+    plt.xlabel("Stock value")
+    plt.ylabel("Frequency")
+    plt.title("title")
+    plt.show()
+
+def conf_interval(start_val, dataframe, nofsim):
     """
     @params:
         dataframe: pandas dataframe of our stock
@@ -64,22 +123,45 @@ def MC(start_val, dataframe, nofsim):
     #Variables
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + std.values*epsilon 
-    sim_values = np.zeros_like(delta_x)
-    sim_values[0] = start_val
-    
-    #Simulation
+    #sim_values = np.zeros_like(delta_x)
+    #sim_values[0] = start_val
+    delta_x_interval_1 = np.zeros(len(days))
+    delta_x_interval_2 = np.zeros(len(days))
+    expected_delta_x = np.zeros(len(days))
+
+    #Defining confidence intervals
     for t in range(1, len(days)):
-        sim_values[t] = sim_values[t-1]*np.exp(delta_x[t])
+        delta_x_interval_1[t] = drift*(t-days[0]) + std *1.96*np.sqrt(t - days[0])
+        delta_x_interval_2[t] = drift*(t-days[0]) + std *-1.96*np.sqrt(t - days[0])
+
+    S = np.zeros_like(delta_x)
+    S_interval_1 = np.zeros_like(delta_x_interval_1)
+    S_interval_2 = np.zeros_like(delta_x_interval_2)
+    S_interval_1[0] = start_val
+    S_interval_2[0] = start_val
+    S[0] = start_val
+    expected_delta_x[0] = start_val
+
+    #Simulation of confidence interval
+    for t in range(1, len(days)):
+        S[t] = S[t-1]*np.exp(delta_x[t])
+        S_interval_1[t] = start_val*np.exp(delta_x_interval_1[t])
+        S_interval_2[t] = start_val*np.exp(delta_x_interval_2[t])
+        expected_delta_x[t] = expected_delta_x[t-1]*np.exp(mu.values)
     
-    index_values = [i for i in range(0, len(days))]
-    column_index = [i for i in range(0, nofsim)]
-    new_dataframe = pd.DataFrame(sim_values)
-    return new_dataframe
-    
+    print(S_interval_1)
+    #print(S_interval_2)
+    return S,S_interval_1,S_interval_2,expected_delta_x
 
-def plot_all(train, days_sim, mc_sim):
-    dates_train = pd.to_datetime(train.index.values)
-    dates_sim = pd.date_range(str(dates_train[-1]), periods=days_sim, freq="D")
 
-    plt.figure()
-
+def plot_conf(S,S_interval_1,S_interval_2,expected_delta_x):
+    plt.figure(figsize=(12.2,4.5))
+    color = 'black'
+    plt.plot(S)
+    plt.plot(S_interval_1,color=color)
+    plt.plot(S_interval_2,color=color)
+    plt.plot(expected_delta_x,color=color)
+    plt.title('Price of Amazon stock 1 year from now: 95% Confidence Interval')
+    plt.xlabel('Time',fontsize=18)
+    plt.ylabel('Price',fontsize=18)
+    plt.show()
