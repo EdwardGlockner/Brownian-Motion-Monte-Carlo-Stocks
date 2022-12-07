@@ -77,4 +77,9 @@ def MC(start_val, dataframe, nofsim):
     return new_dataframe
     
 
+def plot_all(train, days_sim, mc_sim):
+    dates_train = pd.to_datetime(train.index.values)
+    dates_sim = pd.date_range(str(dates_train[-1]), periods=days_sim, freq="D")
+
+    plt.figure()
 
