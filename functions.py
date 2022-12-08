@@ -87,12 +87,16 @@ def plot_tree(train, days_sim, mc_sim):
     dates_train = pd.to_datetime(train.index.values)
     dates_sim = pd.to_datetime(mc_sim.index.values)
 
-    plt.figure()
+    
     train.loc[dates_train[0] : dates_train[-1], "Close"].plot()
 
     for i in range(0, len(mc_sim.columns)):
-        mc_sim.loc[dates_sim[0] : dates_sim[-1], i].plot()
+        mc_sim.loc[dates_sim[0] : dates_sim[-1], i].plot(lw=0.3)
 
+    plt.show()
+
+def plot_dataframe(df):
+    df.plot()
     plt.show()
 
 def final_values(mc_sim):
@@ -124,8 +128,6 @@ def conf_interval(start_val, dataframe, nofsim):
     #Variables
     epsilon = norm.ppf(np.random.rand(len(days), nofsim))
     delta_x = drift.values + std.values*epsilon 
-    #sim_values = np.zeros_like(delta_x)
-    #sim_values[0] = start_val
     delta_x_interval_1 = np.zeros(len(days))
     delta_x_interval_2 = np.zeros(len(days))
     expected_delta_x = np.zeros(len(days))
@@ -150,8 +152,6 @@ def conf_interval(start_val, dataframe, nofsim):
         S_interval_2[t] = start_val*np.exp(delta_x_interval_2[t])
         expected_delta_x[t] = expected_delta_x[t-1]*np.exp(mu.values)
     
-    print(S_interval_1)
-    #print(S_interval_2)
     return S,S_interval_1,S_interval_2,expected_delta_x
 
 
@@ -170,5 +170,5 @@ def plot_conf(S,S_interval_1,S_interval_2,expected_delta_x):
 
 def conf_interval_values(last_values):
     last_values = last_values.to_numpy()
-    interval = st.t.interval(alpha = 0.95, df = len(last_values)-1, loc = last_values.mean(), scale = st.sem(last_values))
+    interval = st.t.interval(alpha = 0.99, df = len(last_values)-1, loc = last_values.mean(), scale = st.sem(last_values))
     return interval
