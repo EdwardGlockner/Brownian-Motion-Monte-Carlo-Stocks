@@ -9,6 +9,9 @@ file_path = "Data/AMZN.csv"
 
 # Reads the data into a dataframe
 data = read_csv(file_path, ticker)
+plot_dataframe(data, "Date", "Closing price", "Historical data of Amazon stock", "Images/historical_data.png")
+"""
+
 train, test = split_timeseries(data)
 train_returns = log_returns(train)
 start_val = train["Close"].iloc[len(train)-1]
@@ -31,6 +34,6 @@ print("Correct final value: ", correct_final_value)
 
 interval = conf_interval_values(final_values)
 
-plot_dataframe(train)
 print("Interval", interval)
 plot_histogram(final_values)
+"""

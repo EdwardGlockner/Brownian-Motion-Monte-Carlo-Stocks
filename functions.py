@@ -95,9 +95,16 @@ def plot_tree(train, days_sim, mc_sim):
 
     plt.show()
 
-def plot_dataframe(df):
-    df.plot()
+def plot_dataframe(df, xlabel, ylabel, title, file_output):
+    fig = df.plot()
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    if file_output != "":
+        fig = fig.get_figure()
+        fig.savefig(file_output)
     plt.show()
+    
 
 def final_values(mc_sim):
     last_values = mc_sim.iloc[-1,:]

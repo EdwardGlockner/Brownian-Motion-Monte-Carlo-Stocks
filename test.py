@@ -1,3 +1,0 @@
-import scipy
-
-print("hello")
