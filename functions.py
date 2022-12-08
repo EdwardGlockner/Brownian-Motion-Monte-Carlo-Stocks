@@ -1,4 +1,5 @@
 from scipy.stats import norm
+from scipy import stats as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -165,3 +166,9 @@ def plot_conf(S,S_interval_1,S_interval_2,expected_delta_x):
     plt.xlabel('Time',fontsize=18)
     plt.ylabel('Price',fontsize=18)
     plt.show()
+
+
+def conf_interval_values(last_values):
+    last_values = last_values.to_numpy()
+    interval = st.t.interval(alpha = 0.95, df = len(last_values)-1, loc = last_values.mean(), scale = st.sem(last_values))
+    return interval
