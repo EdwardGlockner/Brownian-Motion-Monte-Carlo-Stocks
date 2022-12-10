@@ -25,9 +25,13 @@ def read_csv(file_path, tick):
 
 def split_timeseries(timeSeries):
     """
+    Splits a dataframe into a training set and a testing set, with 50 % of the data in each
     @params:
+        timeSeris: the dataframe that will be split
 
     @returns:
+        Train:the training set
+        Test: the testing set
 
     Splits a dataframe into a training set containing 80% of the data, and a testing set containing 
     """
@@ -38,6 +42,7 @@ def split_timeseries(timeSeries):
 
 def log_returns(dataframe):
     """
+    Calculates the daily logarithmic returns
     @params:
         dataframe: pandas dataframe of our stock.
     @returns:
@@ -49,9 +54,16 @@ def log_returns(dataframe):
 
 def MC(train, start_val, dataframe, nofsim, days_sim):
     """
+    Monte Carlo simulate the stock through the Brownian Motion model
     @params:
-        dataframe: pandas dataframe of our stock
+        train: the training set
+        start_val: starting value of the simulation (the last value in the training set)
+        dataframe: pandas dataframe of our stocks logarthmic daily returns
+        nofsim: number of Monte-Carlo simulations
+        days_sim: number of days forward that will be simulated
+
     @returns:
+        new_dataframe: All the Monte-Carlo simulations
        
 
     """
@@ -84,6 +96,16 @@ def MC(train, start_val, dataframe, nofsim, days_sim):
     
 
 def plot_tree(train, days_sim, mc_sim):
+    """
+    Plots the training set together with all the Monte-Carlo simulations
+    @params:
+        train: the training set
+        days_sim: number of days simulated by the Monte-Carlo simulations
+        mc_sim: all the simulated paths
+
+    @returns:
+        none
+    """
     dates_train = pd.to_datetime(train.index.values)
     dates_sim = pd.to_datetime(mc_sim.index.values)
 
@@ -91,11 +113,24 @@ def plot_tree(train, days_sim, mc_sim):
     train.loc[dates_train[0] : dates_train[-1], "Close"].plot()
 
     for i in range(0, len(mc_sim.columns)):
-        mc_sim.loc[dates_sim[0] : dates_sim[-1], i].plot(lw=0.3)
-
+        mc_sim.loc[dates_sim[0] : dates_sim[-1], i].plot(lw=1)
+    plt.ylabel("Stock price")
+    plt.title("Monte Carlo simulation")
     plt.show()
 
 def plot_dataframe(df, xlabel, ylabel, title, file_output):
+    """
+    Plots a dataframe
+    @params:
+        df: dataframe that should be plotted
+        xlabel: x axis label of the plot
+        ylabel: y axis label of the plot
+        title: title of the plot
+        file_output: path to a file that should be saved (can be set to null)
+
+    @returns:
+        none
+    """
     fig = df.plot()
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -107,23 +142,45 @@ def plot_dataframe(df, xlabel, ylabel, title, file_output):
     
 
 def final_values(mc_sim):
+    """
+    Gets all the final values of the Monte-Carlo simulated price paths
+    @params:
+        mc_sim: the Monte-Carlo simulated paths in a pandas dataframe
+
+    @returns:
+        last_values: all the final values
+    """
     last_values = mc_sim.iloc[-1,:]
     return last_values
 
 def plot_histogram(values):
+    """
+    Plots a histogram of all the final values of the Monte-Carlo simualted price paths
+    @params:
+        values: the final values of the pandas dataframe
+
+    @returns:
+        none
+    """
     values.hist(bins=40, grid=True, figsize=(7,4), color = "#86bf91", zorder=2, rwidth=0.9)
     plt.xlabel("Stock value")
     plt.ylabel("Frequency")
-    plt.title("title")
+    plt.title("Histogram of the final stock values of the Monte-Carlo simulation")
     plt.show()
 
 def conf_interval(start_val, dataframe, nofsim):
     """
+    Monte Carlo simulation with confidence interval of the drift in the Brownian Motion model
     @params:
+        start_val: starting value of the simulation (last value in the training set)
         dataframe: pandas dataframe of our stock
-    @returns:
-       
+        nofsim: number of Monte-Carlo simulated price paths
 
+    @returns:
+        S: the simulated price paths
+        S_interval_1: the higher confidence interval
+        S_interval_2: the lower confidence interval
+        expected_delta_x: the excpected logarthmic daily returns
     """
     #Parameters
     mu = dataframe.mean()
@@ -163,6 +220,17 @@ def conf_interval(start_val, dataframe, nofsim):
 
 
 def plot_conf(S,S_interval_1,S_interval_2,expected_delta_x):
+    """
+    Plots the simulated price paths together with the confidence interval
+    @params:
+        S: the simulated price paths of the Monte-Carlo simulation
+        S_interval_1: the higher confidence interval
+        S_interval_2: the lower confidence interval
+        excpected_delta_x: the excpected logarthmic daily returns
+
+    @returns:
+        none
+    """
     plt.figure(figsize=(12.2,4.5))
     color = 'black'
     plt.plot(S)
@@ -176,6 +244,15 @@ def plot_conf(S,S_interval_1,S_interval_2,expected_delta_x):
 
 
 def conf_interval_values(last_values):
+    """
+    Creates a confidence interval of the final values of the Monte-Carlo simulated price paths
+    @params:
+        last_values; the final values of all the Monte-Carlo simulated price paths
+
+    @returns:
+        interval: the 99% confidence interval
+        
+    """
     last_values = last_values.to_numpy()
     interval = st.t.interval(alpha = 0.99, df = len(last_values)-1, loc = last_values.mean(), scale = st.sem(last_values))
     return interval
