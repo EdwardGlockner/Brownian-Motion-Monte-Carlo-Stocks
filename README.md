@@ -2,13 +2,12 @@
 # Table of Contents
 - [About the Project](#about-the-project)
   * [Description](#description)
-  * [Screenshots](#screenshots)
+  * [Improvments](#improvments)
 
 - [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Run Locally](#run-locally)
 
-- [Usage](#usage)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
   
@@ -16,17 +15,38 @@
 <!-- About the Project -->
 ## About the Project
 
+This is a project I made in the course Inference Theory I at Uppsala University in Sweden. 
+
 <!-- Description -->
 ### Description
 
-Here is a description of the project
+The project Monte Carlo simulates future stock prices using Geometric Brownian Motion to model the data. Data of different stocks have been downloaded from Yahoo Finance between the period of early 2017 to early 2022 on a daily basis. An example of stock data form Amazon can be seen below:
 
-<!-- Screenshots -->
-### Screenshots
-
-<div align="center"> 
-  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
+<div class="align-center"> 
+  <img src="https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks/blob/main/Images/historical_data.png" width="410" height="350"/>
 </div>
+
+The stock data is divided into a training set from which we calculate the model parameters of Brownian Motion. The model is then Monte-Carlo simulated until early 2022, where thousands of different price paths are calculated. Below is the simulation of Amazon stock:
+
+<div class="align-center"> 
+  <img src="https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks/blob/main/Images/Monte%20Carlo%20simulation.png" width="410" height="350"/>
+</div>
+
+We can calculate a histogram of the final values of all the simulated paths:
+
+<div class="align-center"> 
+  <img src="https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks/blob/main/Images/histogram.png" width="410" height="350"/>
+</div>
+
+After this, a confidence interval of the final values is calculated, and we can then see if the correct value lies in the interval. For example, for Amazon we get:
+
+Mean simulated value:  142.16413158510346 <br />
+Correct final value:  154.919495 <br />
+Interval (139.45056870478774, 144.87769446541918) <br />
+
+### Improvments
+
+Often times, the correct value with not lie in the confidence interval. One method to try to improve our method is to make the Monte-Carlo simulation dynamic, as we were trading in real time. For each new point we see, we can update our model parameters which should lead to a more accurate simulation. In the current version we don't update the model parameters when we see new data points, which leads to inaccuracy in the model.
 
 
 <!-- Getting Started -->
@@ -35,58 +55,54 @@ Here is a description of the project
 <!-- Prerequisites -->
 ### Prerequisites
 
-This project uses Yarn as package manager
+This project uses a number of libraries:
 
 ```bash
- npm install --global yarn
+ matplotlib <br />
+ pandas <br />
+ seaborn <br />
+ scipy <br />
+ datetime <br />
+ numpy
+ 
 ```
   
-
 <!-- Run Locally -->
 ### Run Locally
 
 Clone the project
 
 ```bash
-  git clone https://github.com/Louis3797/awesome-readme-template.git
+  git clone https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks.git
 ```
 
-Go to the project directory
+Open up a terminal and install the requirments
 
 ```bash
-  cd my-project
+  python3 install.py
 ```
 
+Now you can run the project
 
-<!-- Usage -->
-## Usage
-
-Use this space to tell a little more about your project and how it can be used. Show additional screenshots, code samples, demos or link to other resources.
-
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
+```bash
+  python3 main.py
 ```
+
 
 
 <!-- Contact -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Edward Glöckner - [@linkedin](https://www.linkedin.com/in/edwardglockner/) - edward.glockner5@gmail.com
 
-Project Link: [https://github.com/Louis3797/awesome-readme-template](https://github.com/Louis3797/awesome-readme-template)
+Project Link: [https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks](https://github.com/EdwardGlockner/Brownian-Motion-Monte-Carlo-Stocks)
 
 
-<!-- Acknowledgments -->
-## Acknowledgements
+<!-- Links -->
+## Links
 
-Use this section to mention useful resources and libraries that you have used in your projects.
+Here are some helpful links:
 
- - [Shields.io](https://shields.io/)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
- - [Readme Template](https://github.com/othneildrew/Best-README-Template)
+ - [Brownian Motion Monte Carlo Simulation](https://medium.com/analytics-vidhya/building-a-monte-carlo-method-stock-price-simulator-with-geometric-brownian-motion-and-bootstrap-e346ff464894)
+ 
+ 
