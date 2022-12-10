@@ -1,3 +1,5 @@
+# Monte Carlo Simulation of Stocks Using Brownian Motion
+
 <!-- Table of Contents -->
 # Table of Contents
 - [About the Project](#about-the-project)
@@ -58,11 +60,11 @@ Often times, the correct value with not lie in the confidence interval. One meth
 This project uses a number of libraries:
 
 ```bash
- matplotlib <br />
- pandas <br />
- seaborn <br />
- scipy <br />
- datetime <br />
+ matplotlib 
+ pandas
+ seaborn 
+ scipy 
+ datetime 
  numpy
  
 ```
