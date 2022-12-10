@@ -17,7 +17,7 @@
 <!-- About the Project -->
 ## About the Project
 
-This is a project I made in the course Inference Theory I at Uppsala University in Sweden. 
+This is a project I made in the course Inference Theory I at Uppsala University in Sweden. The full project can be seen in the pdf file "Full Project.pdf"
 
 <!-- Description -->
 ### Description
